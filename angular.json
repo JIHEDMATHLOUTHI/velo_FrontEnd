@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "veloFront": {
+    "PI": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -13,7 +13,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/velo-front",
+            "outputPath": "dist/pi",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": [
@@ -22,12 +22,26 @@
             "tsConfig": "tsconfig.app.json",
             "assets": [
               "src/favicon.ico",
-              "src/assets"
+              "src/assets",
+              {
+                "glob": "**/*",
+                "input": "node_modules/leaflet/dist/images/", 
+                "output": "./assets"
+              }
             ],
             "styles": [
-              "src/styles.css"
+              "@angular/material/prebuilt-themes/indigo-pink.css",
+              "src/styles.css",
+              "node_modules/leaflet/dist/leaflet.css",
+              "node_modules/leaflet-routing-machine/dist/leaflet-routing-machine.css"
+            
+
             ],
-            "scripts": []
+            "scripts": [
+              "./node_modules/chart.js/dist/chart.js"
+            
+
+            ]
           },
           "configurations": {
             "production": {
@@ -60,10 +74,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "veloFront:build:production"
+              "browserTarget": "PI:build:production"
             },
             "development": {
-              "browserTarget": "veloFront:build:development"
+              "browserTarget": "PI:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -71,7 +85,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "veloFront:build"
+            "browserTarget": "PI:build"
           }
         },
         "test": {
@@ -87,12 +101,28 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.css"
+              "@angular/material/prebuilt-themes/indigo-pink.css",
+              "src/styles.css",
+              "/assets/css/bootstrap.min.css",
+              "/assets/css/LineIcons.2.0.css" ,
+              "/assets/css/animate.css",
+              "/assets/css/tiny-slider.css",
+              "/assets/css/glightbox.min.css",
+              "/assets/css/main.css"
             ],
-            "scripts": []
+            "scripts": [
+              "/assets/js/bootstrap.min.js",
+              "/assets/js/wow.min.js",
+              "/assets/js/tiny-slider.js",
+              "/assets/js/glightbox.min.js"
+
+            ]
           }
         }
       }
     }
+  },
+  "cli": {
+    "analytics": "dc3b477b-cd49-4d54-ae54-fc057ea7c0ee"
   }
 }

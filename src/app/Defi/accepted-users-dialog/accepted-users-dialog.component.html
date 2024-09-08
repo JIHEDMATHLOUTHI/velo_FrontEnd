@@ -4,7 +4,7 @@
     <li *ngFor="let user of acceptedUsers">
      <b style="font-size: large;"> {{ user }}</b>
       <button class="btn btn-success" type="button" style="margin-left: 180px; " mat-button (click)="checkWinning(user)">
-        Check Winning
+         Winning
       </button>
       <span *ngIf="winningStatus[user] !== undefined">
         {{ winningStatus[user] ? 'Winning' : 'Not Winning' }}

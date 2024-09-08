@@ -1,21 +1,5 @@
 <body>
-  <!--[if lte IE 9]>
-    <p class="browserupgrade">
-      You are using an <strong>outdated</strong> browser. Please
-      <a href="https://browsehappy.com/">upgrade your browser</a> to improve
-      your experience and security.
-    </p>
-  <![endif]-->
 
-  <!-- Preloader -->
-
-  <!-- /End Preloader -->
-
-  <!-- Start Header Area -->
-
-  <!-- End Header Area -->
-
-  <!-- Start Breadcrumbs -->
   <div class="breadcrumbs">
       <div class="container">
           <div class="row align-items-center">
@@ -76,12 +60,12 @@
                                         <div class="col-xl-6">
                                           <div class="card-body p-md-5 text-black">
                                             <h3 class="mb-4 text-uppercase">Add Defi</h3>
-                                <form #productForm="ngForm"  enctype="multipart/form-data" (ngSubmit)="onSubmit(productForm)">
+                                <form #productForm="ngForm"  (ngSubmit)="onSubmit(productForm)">
                                   <div class="row">
 
                                       <div class="form-outline mb-4">
                                           <label class="form-label" for="form3Example1m"> Name</label>
-                                          <input class="form-control " type="text" id="form3Example1m" name="name" [(ngModel)]="product.name" required minlength="3" maxlength="20" #name="ngModel">
+                                          <input class="form-control " type="text" id="form3Example1m" name="name" [(ngModel)]="defi.name" required minlength="3" maxlength="20" #name="ngModel">
                                           <div *ngIf="name.invalid && (name.dirty || name.touched)" style="color: #dc3545; font-size: 0.875rem; margin-top: 0.25rem;">
                                               <div *ngIf="name.errors && name.errors['required']">Name is required.</div>
                                               <div *ngIf="name.errors && name.errors['minlength']">Name must be at least 3 characters long.</div>
@@ -94,7 +78,7 @@
 
                                           <div class="form-outline mb-4">
                                           <label class="form-label" for="form3Example1n">pointArrivee</label>
-                                          <input class="form-control" type="text" id="form3Example1n" name="pointArrivee"  [(ngModel)]="product.pointArrivee" required minlength="2" maxlength="20" #pointArrivee="ngModel">
+                                          <input class="form-control" type="text" id="form3Example1n" name="pointArrivee"  [(ngModel)]="defi.pointArrivee" required minlength="2" maxlength="20" #pointArrivee="ngModel">
                                           <div *ngIf="pointArrivee.invalid && (pointArrivee.dirty || pointArrivee.touched)" style="color: #dc3545; font-size: 0.875rem; margin-top: 0.25rem;">
                                             <div *ngIf="pointArrivee.errors && pointArrivee.errors['required']">pointArrivee is required.</div>
                                             <div *ngIf="pointArrivee.errors && pointArrivee.errors['minlength']">pointArrivee must be at least 2 characters long.</div>
@@ -104,7 +88,7 @@
 
                                           <div class="form-outline mb-4">
                                               <label class="form-label" for="form3Example1n">pointSorite</label>
-                                              <input class="form-control" type="text" id="form3Example1n" name="pointSorite"  [(ngModel)]="product.pointSorite" required minlength="2" maxlength="20" #pointSorite="ngModel">
+                                              <input class="form-control" type="text" id="form3Example1n" name="pointSorite"  [(ngModel)]="defi.pointSorite" required minlength="2" maxlength="20" #pointSorite="ngModel">
                                               <div *ngIf="pointSorite.invalid && (pointSorite.dirty || pointSorite.touched)" style="color: #dc3545; font-size: 0.875rem; margin-top: 0.25rem;">
                                                 <div *ngIf="pointSorite.errors && pointSorite.errors['required']">pointSorite is required.</div>
                                                 <div *ngIf="pointSorite.errors && pointSorite.errors['minlength']">pointSorite must be at least 2 characters long.</div>
@@ -114,7 +98,7 @@
 
                                           <div class="form-outline mb-4">
                                               <label class="form-label" for="form3Example1n">DateSortie</label>
-                                              <input class="form-control" type="datetime-local" id="form3Example1n" name="DateSortie"  [(ngModel)]="product.DateSorite" required  #DateSortie="ngModel">
+                                              <input class="form-control" type="datetime-local" id="form3Example1n" name="DateSortie"  [(ngModel)]="defi.DateSorite" required  #DateSortie="ngModel">
 
                                               </div>
 
@@ -123,7 +107,7 @@
 
                                             <div class="form-outline mb-4">
                                               <label class="form-label" for="form3Example1n">numero</label>
-                                              <input class="form-control" type="text" id="form3Example1n" name="numero"  [(ngModel)]="product.numero" required pattern="[0-9]{8}" #numero="ngModel">
+                                              <input class="form-control" type="text" id="form3Example1n" name="numero"  [(ngModel)]="defi.numero" required pattern="[0-9]{8}" #numero="ngModel">
                                               <div *ngIf="numero.invalid && (numero.dirty || numero.touched)" style="color: #dc3545; font-size: 0.875rem; margin-top: 0.25rem;">
                                                   <div *ngIf="numero.errors && numero.errors['required']">Numero is required.</div>
                                                 <div *ngIf="numero.errors && numero.errors['pattern']">Numero must be 8 digits.</div>
@@ -131,7 +115,7 @@
                                             </div>
                                             <div class="form-outline mb-4">
                                               <label class="form-label" for="form3Example1n">price</label>
-                                              <input class="form-control" type="number" id="form3Example1n" name="price"  [(ngModel)]="product.price"required min="0" max="30" #price="ngModel">
+                                              <input class="form-control" type="number" id="form3Example1n" name="price"  [(ngModel)]="defi.price"required min="0" max="30" #price="ngModel">
                                               <div *ngIf="price.invalid && (price.dirty || price.touched)" style="color: #dc3545; font-size: 0.875rem; margin-top: 0.25rem;">
                                                 <div *ngIf="price.errors && price.errors['required']">Price is required.</div>
                                                 <div *ngIf="price.errors && price.errors['min']">Price cannot be negative.</div>
@@ -141,51 +125,17 @@
 
                                             <div class="form-outline mb-4">
                                               <label class="form-label" for="form3Example1n">nbrPlaceDisponible</label>
-                                              <input class="form-control" type="number" id="form3Example1n" name="nbrPlaceDisponible"  [(ngModel)]="product.nbrPlaceDisponible"required min="0" max="10" #nbrPlaceDisponible="ngModel">
+                                              <input class="form-control" type="number" id="form3Example1n" name="nbrPlaceDisponible"  [(ngModel)]="defi.nbrPlaceDisponible"required min="0" max="10" #nbrPlaceDisponible="ngModel">
                                               <div *ngIf="nbrPlaceDisponible.invalid && (nbrPlaceDisponible.dirty || nbrPlaceDisponible.touched)" style="color: #dc3545; font-size: 0.875rem; margin-top: 0.25rem;">
                                                 <div *ngIf="nbrPlaceDisponible.errors && nbrPlaceDisponible.errors['required']">nbrPlaceDisponible is required.</div>
                                                 <div *ngIf="nbrPlaceDisponible.errors && nbrPlaceDisponible.errors['min']">nbrPlaceDisponible cannot be negative.</div>
                                                 <div *ngIf="nbrPlaceDisponible.errors && nbrPlaceDisponible.errors['max']">nbrPlaceDisponible cannot exceed 10 place</div>
                                               </div>
                                             </div>
-                                 <!-- <div class="row">
-                                  <div class="form-outline mb-4">
-                                      <label class="mb-3" for="form3Example86">Images</label>
 
-                                          <div class="dropzone" appDrag (files)="fileDropped($event)">
-                                              <div class="text-wrapper">
-                                                  <div class="centered" >
-                                                  Drag and Drop your file or
-                                                  <a (click)="selectfile.click()" class="browse-button">browse</a> a file
-                                              </div>
-                                          </div>
-                                          </div>
-
-                                    <input class="form-control" style="display: none;" #selectfile type="file" id="form3Example86" value="select" required (change)="onFileSelectedd($event)">
-                                    <div class="mt-5">
-                                      <div class="row">
-                                          <mat-grid-list cols="4" rowHeight="1:1">
-                                              <mat-grid-tile *ngFor="let file of product.imageModels ; let i =index;">
-                                                      <div style="position: relative;">
-                                                          <span class="btn-remove-image" (click)="removeImage(i)">x</span>
-                                                          <img [src]="file.url" alt="100px" width="100px">
-
-                                                      </div>
-                                              </mat-grid-tile>
-                                          </mat-grid-list>
-
-                                      </div>
-                                    </div>
-
-                                  </div>
-                                  </div>-->
                                   <button class="btn btn-info btn-round  btn-lg" type="submit" >   Add   </button>
                                 </form>
-                              <!--  </div>
-                                </div>
-                                </div>
-                                </div>
-                                </div>-->
+                          
                               </div>
                                 </div>
                                 </div>
@@ -305,7 +255,6 @@
                           <h3>Contact</h3>
                           <ul>
                               <li>23 New Design Str, Lorem Upsum 10<br> Hudson Yards, USA</li>
-                              <li>Tel. +(123) 1800-567-8990 <br> Mail. support@classigrids.com</li>
                           </ul>
                       </div>
                       <!-- End Single Widget -->

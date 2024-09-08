@@ -15,14 +15,7 @@
       </div>
     </div>
   </div>
-  <!-- End Breadcrumbs -->
-  <div class="center-container">
 
-      <!-- Utilisez une classe pour définir la taille et la couleur de l'icône -->
-      <img  (click)="toggleNotifications1()" src="https://cdn.pixabay.com/photo/2017/06/13/12/52/bell-2398760_1280.png" style="height: 40px; width: 40px; border-radius: 50%; border: 0.2px solid #85065d;cursor: pointer;" alt="Logo">
-      <!-- Affichez le nombre total de notifications avec un badge -->
-      <span style="color: #960505;font-size: larger;margin-top: -2%;" class="notification-badge">{{ notifications.length }}</span>
-  </div>
 
   <!-- Start Dashboard Section -->
   <section class="dashboard section">
@@ -39,6 +32,23 @@
                           </path>
                       </svg>
                   </span>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                  
+
+
                   <p class="title-text">
                       Your Points
                   </p>
@@ -59,6 +69,28 @@
                   </div>
               </div>
           </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
             <!-- Bouton ou lien pour représenter l'icône de notification -->
 
@@ -128,38 +160,9 @@
             <!-- Start Profile Settings Area -->
             <div class="dashboard-block mt-0 profile-settings-block">
               <h3 class="block-title">Profile Settings</h3>
-                  <!-- notificationss -->
 
 
-      <!-- Affichage des notifications (s'affiche si showNotifications est vrai) -->
-      <div *ngIf="showNotifications">
-                  <div *ngFor="let notification of notifications">
-                    <div class="notification-item">
-                      <!-- Icône de notification -->
-                      <i class="fas fa-bell notification-icon"></i>
-                      <div *ngIf="notification.userDestiner.username === loggedInUser">
-                        <h5>De :</h5>
-                        <h4>{{ notification.userEnvoyer.username }}</h4>
-                        <p>{{ notification.message }}</p>
-                        <p>{{ notification.timestamp }}</p>
-                        <h5>Envoyée à :</h5>
-                        <h4>{{ notification.userDestiner.username }}</h4>
-                        <hr>
-                        <div *ngIf="!notification.acceptee && !notification.refusee ">
-                          <!-- Boutons pour accepter ou refuser le covoiturage -->
-                          <button (click)="accepterCovoiturage(notification.defi.id, notification.userEnvoyer.id)" type="button" class="btn btn-success">Accepter </button>
-                          <button (click)="refuserCovoiturage(notification.defi.id, notification.userEnvoyer.id)" type="button" class="btn btn-danger">Refuser </button>
-                        </div>
-                      </div>
-                      <div *ngIf="notification.acceptee && !notification.refusee">
-                        <!-- Bouton pour annuler l'acceptation du covoiturage -->
-                        <button (click)="annulerAcceptationCovoiturage(notification.defi.id, notification.userDestiner.id)" type="button" class="btn btn-success">annuler la participation</button>
-                      </div>
-                    </div>
-                  </div>
-                    <hr>
 
-                </div>
               <div class="inner-block">
                 <div class="image">
                   <img src="assets/images/dashboard/user-image.jpg" alt="#" />

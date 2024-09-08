@@ -19,7 +19,6 @@ export class LoginComponent implements OnInit {
     private authService: AuthService,
     private router: Router,
     private snackbar: MatSnackBar,
-    private formBuilder: FormBuilder
   ) {}
 
   ngOnInit(): void {
@@ -28,11 +27,10 @@ export class LoginComponent implements OnInit {
       password: [null, [Validators.required]],
       rememberMe: [false], // Optionnel, selon si vous voulez implémenter cette fonctionnalité
     });
-    this.aFormGroup = this.formBuilder.group({
+    this.aFormGroup = this.fb.group({
    //   recaptcha: ['', Validators.required],
     });
   }
-  siteKey: string = '6LevP4spAAAAAGORJ4Z3vjGfitgthh0dJjsHyOWE';
   private isAuthenticated: boolean = false;
 
   handleLogin() {
@@ -42,11 +40,11 @@ export class LoginComponent implements OnInit {
       });
       return;
     }
-  
+
     this.authService.login(this.loginFormGroup.value).subscribe(
       (response) => {
         this.snackbar.open('Login successful.', 'close', { duration: 5000 });
-        this.router.navigate(['/profile']); 
+        this.router.navigate(['/profile']);
         console.log("avecc success");
         // Redirection vers la page de profil après une connexion réussie
       },

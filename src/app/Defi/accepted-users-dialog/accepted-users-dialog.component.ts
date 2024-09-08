@@ -23,7 +23,7 @@ export class AcceptedUsersDialogComponent implements OnInit {
     this.defiService.getAcceptedUsers().subscribe(
       (data: string[]) => {
         this.acceptedUsers = data;
-        console.log("kk",data);
+        console.log("joujou ",data);
 
       },
       error => {
@@ -42,8 +42,6 @@ export class AcceptedUsersDialogComponent implements OnInit {
     );
   }
 
-  onClose(): void {
-    this.dialogRef.close();
-  }
+
 
 }

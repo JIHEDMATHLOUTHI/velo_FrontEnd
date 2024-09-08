@@ -2,17 +2,9 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ProductService } from '../../Service/product.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Product } from '../../model/product';
-import * as QRCode from 'qrcode';
 import Swal from 'sweetalert2';
-import { ProductRating } from 'src/app/model/ProductRating';
-import { QRDialogComponent } from 'src/app/qrdialog/qrdialog.component';
 import { MatDialog } from '@angular/material/dialog';
-import { CommentDialogComponent } from '../comment-dialog/comment-dialog.component';
-import { NgForm } from '@angular/forms';
-import { Subscription } from 'rxjs';
-import { ProductComment } from 'src/app/model/ProductComment';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { CarppolingServiceService } from 'src/app/Service/carppoling-service.service';
+import { DefiServiceService } from 'src/app/Service/defi-service.service';
 
 @Component({
   selector: 'app-detaitlsback',
@@ -20,215 +12,160 @@ import { CarppolingServiceService } from 'src/app/Service/carppoling-service.ser
   styleUrls: ['./detaitlsback.component.css']
 })
 export class DetaitlsbackComponent implements OnInit {
-addToCart(productId: any) {
 
-   this.productService.addToCart(productId).subscribe(
-    
-    
-      (response) => {
-        console.log(response);
-        Swal.fire('Success!', 'Produit ajouté avec succès dans le cart', 'success');
 
-      },(error) => {
-        console.log(error)
-      }
-    )
-    console.log(productId);}
+
 
   selectProductIndex = 0;
   product!: Product;
-  private ratingSubscription!: Subscription;
 
-  constructor(private CarppolingService:CarppolingServiceService,private activatedRoute: ActivatedRoute, private router : Router,
-    private productService: ProductService,public dialog: MatDialog,    private snackbar: MatSnackBar,
-  ) { }
+  constructor(private DefiServiceService:DefiServiceService,private activatedRoute: ActivatedRoute,private productService: ProductService) {}
 
   ngOnInit(): void {
 
    this.product = this.activatedRoute.snapshot.data['product'];
-    this.getproductraitingbyproduct(this.product.idProduct);
 
-    this.ratingSubscription = this.productService.getRating(this.product.idProduct).subscribe(newRating => {
-      this.rating = newRating;
-    });
-    this.getpoint();
-
-
+    this.getpoint()
   }
-  ngOnDestroy(): void {
-    this.ratingSubscription.unsubscribe();
-  }
-  
+
   changeIndex(index:any){
     this.selectProductIndex=index;
   }
 
-  product1: any = {  // Exemple d'objet de produit
-    name: 'Nom du produit',
-    description: 'Description du produit',
-    price: 'Prix du produit',
-    address: 'Adresse du produit'
-  };
 
 
-  openQRDialog(): void {
-    const dialogRef = this.dialog.open(QRDialogComponent, {
-      width: '200px',
-      data: { product: this.product } // Passer l'URL de votre code QR à afficher
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('La boîte de dialogue a été fermée');
-    });
-  }
-
-  currentDate: Date = new Date();
-  //////////////////////////rating//////////////////
-  
-  saveProductRating(productId: number, rating: number, comment: string): void {
-    const productRating: ProductRating = {
-      rating: rating,
-      comment: comment,
-      
-    };
-          this.productService.saveProductRating(productId, productRating).subscribe(
-      response => {
-        console.log('Rating saved successfully:', response);
-        Swal.fire('Success!', 'Add Comment ', 'success');
-        this.rating = 0; 
-        this.comment = '';
-        this.ratingSelected = false;
-
-      },
-      error => {
-        console.error('An error occurred while saving rating:', error);
-      }
-    );
-  }
-  rating: number = 0; // Note de rating actuelle
-  comment: string = '';
-  selectedRating: number = 0;
-
- /*setRating(rating: number): void {
-    this.rating = rating;
-    this.ratingSelected=true;
-    console.log('Rating selected:', this.rating);
-
-  }*/
-
-
-  productComment: ProductComment[] | null = null; // Initialiser avec une valeur nulle
-
-  getproductraitingbyproduct(id :number) {
-    this.productService.getProductRatingByProductId(id).subscribe(
-      (data: ProductComment[]) => {
-        this.productComment = data;
-      },
-      error => {
-        console.log('Une erreur s\'est produite lors de la récupération des notes de rating du produit:', error);
-      }
-    );
-  }
-  openCommentDialog(): void {
-    const dialogRef = this.dialog.open(CommentDialogComponent, {
-      width: '600px', // Définissez la largeur de la boîte de dialogue selon vos besoins
-      data: { productComment: this.productComment } // Transmettez les données des commentaires à afficher
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('La boîte de dialogue des commentaires a été fermée');
-    });
-  }
-  
-
-  ratingSelected: boolean = false;
-
-  /////////////////////////////////
-  async rateProduct(productId: number, rating: number) {
-    try {
-      const response = await this.productService.rateProduct(productId, rating).toPromise();
-      console.log('Rating saved:', response);
-      // Afficher une notification de succès
-      Swal.fire('Success!', 'Rating saved successfully.', 'success');
-      this.selectedRating = this.rating; // Mettre à jour les étoiles sélectionnées après sauvegarde
-
-    } catch (error) {
-      console.error('Error saving rating:', error);
-      // Afficher une notification d'erreur
-      Swal.fire('Error', 'Failed to save rating. Please try again.', 'error');
-    }
-  }
-  async submitRating(productId: number): Promise<void> {
-    if (this.rating === 0) {
-      Swal.fire('Error', 'Please select a rating.', 'error');
-      return;
-    }
-
-    try {
-      await this.rateProduct(productId, this.rating);
-      // Mettre à jour les étoiles sélectionnées après sauvegarde
-      this.selectedRating = this.rating;
-    } catch (error) {
-      console.error('Error saving rating:', error);
-    }
-  }
-  async commentProduct(productId: number, comment: string) {
-    try {
-      const response = await this.productService.commentProduct(productId, comment).toPromise();
-      console.log('Comment saved:', response);
-      // Afficher une notification de succès.
-      this.snackbar.open('Comment saved successfully..', 'close', { duration: 5000 });
-
-      //Swal.fire('Success!', 'Comment saved successfully.', 'success');
-    } catch (error) {
-      console.error('Error saving comment:', error);
-      // Afficher une notification d'erreur
-      Swal.fire('Error', 'Failed to save comment. Please try again.', 'error');
-    }
-  }
-
- 
-
-  submitComment(productId:number): void {
-    if (this.comment.trim() === '') {
-      Swal.fire('Error', 'Please provide a comment.', 'error');
-      return;
-    }
-
-    // Remplacez par l'ID du produit concerné
-    this.productService.commentProduct(productId, this.comment).subscribe(
-      (response) => {
-        console.log('Comment saved:', response);
-        this.snackbar.open('Comment saved successfully..', 'close', { duration: 5000 });
-
-       // Swal.fire('Success!', 'Comment saved successfully.', 'success');
-        this.comment = ''; // Réinitialiser le commentaire après avoir sauvegardé
-      },
-      (error) => {
-        console.error('Error saving comment:', error);
-        Swal.fire('Error', 'Failed to save comment. Please try again.', 'error');
-      }
-    );
-  }
-
-  
-  setRating(rating: number): void {
-    // Enregistrement du rating dans le service et mise à jour de l'affichage
-    this.productService.setRating(this.product.idProduct, rating);
-    this.rating = rating;
-    this.ratingSelected = true;
-    console.log('Rating selected:', this.rating);
-  }
-
-  clearRating(): void {
-    // Efface le rating du stockage local et réinitialise l'affichage
-    this.productService.clearRating(this.product.idProduct);
-    this.rating = 0;
-  }
   totalCarpoolings: number = 0;
 
+
+  payement(): void {
+    // Appel de la méthode pay et envoi de l'email uniquement après la réussite du paiement
+    this.pay(this.product.price)
+      .then(() => {
+        // Une fois le paiement terminé, on envoie l'email
+        alert('Email sent successfully!!');
+        return this.sendEmailToAdmin();
+      })
+
+      .catch((error) => {
+        console.error('Erreur lors du paiement ou de l\'envoi de l\'email', error);
+      });
+  }
+
+  sendEmailToAdmin(): Promise<void> {
+    return new Promise<void>((resolve, reject) => {
+      const htmlContent = this.generateProductHtml();
+
+      const emailRequest = {
+        to: 'oversizeofficialtn.1@gmail.com',
+        subject: 'New Order Received',
+        text: htmlContent
+      };
+
+      this.productService.sendEmail(emailRequest).subscribe(
+        response => {
+          console.log('Email sent to admin successfully', response);
+          resolve(); // Résoudre la promesse lorsque l'email est envoyé
+        },
+        error => {
+          console.error('Error sending email to admin', error);
+          reject(error); // Rejeter la promesse en cas d'erreur
+        }
+      );
+    });
+  }
+  pageNumber: number = 0;
+
+  generateProductHtml(): string {
+    let text = `
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>New Products Received</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                color: #333;
+                background-color: #f8f8f8; /* Couleur de fond */
+                padding: 20px;
+            }
+            .container {
+                max-width: 600px;
+                margin: 0 auto;
+                background-color: #ffffff; /* Couleur de fond du conteneur */
+                padding: 20px;
+                border-radius: 10px;
+                box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1); /* Ombre légère */
+            }
+            h2 {
+                color: #007bff; /* Couleur du titre */
+                text-align: center;
+            }
+            .product-card {
+                border: 1px solid #ddd;
+                border-radius: 8px;
+                padding: 15px;
+                margin-bottom: 20px;
+                background-color: #fff;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            }
+            .product-image {
+                width: 100px;
+                height: auto;
+                margin-bottom: 10px;
+                display: block;
+                margin-left: auto;
+                margin-right: auto;
+            }
+            .product-name {
+                font-size: 18px;
+                font-weight: bold;
+                color: #333;
+                margin-bottom: 10px;
+                text-align: center;
+            }
+            .product-brand {
+                color: #666;
+                margin-bottom: 5px;
+                text-align: center;
+            }
+            .product-price {
+                color: #28a745; /* Couleur du prix */
+                font-weight: bold;
+                text-align: center;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <h2>New Products Received</h2>
+
+            <!-- Boucle sur les produits pour afficher les cartes -->
+
+            <div class="product-card">
+            <img src="https://cdn.pixabay.com/photo/2021/03/19/13/40/online-6107598_640.png" alt="Produit technologique">
+
+
+
+        </div>
+    </body>
+    </html>
+
+    `;
+
+
+    text += `
+          </div>
+      </body>
+      </html>
+    `;
+
+    return text;
+  }
+
   getpoint(){
-    this.CarppolingService.calculatePoints().subscribe(
+    this.DefiServiceService.calculatePoints1().subscribe(
       (total: number) => {
         this.totalCarpoolings = total;
         console.log("your  points :" ,this.totalCarpoolings);
@@ -245,11 +182,11 @@ addToCart(productId: any) {
       console.error("Le nombre total de points n'est pas défini.");
       return;
     }
-  
+
     // Supposons que vous avez une liste de produits appelée 'products'
     // Vous pouvez la remplacer par la liste de produits réelle que vous utilisez
     const products: any[] = [/* liste de produits */];
-  
+
     // Parcours de tous les produits pour calculer la réduction
     products.forEach(product => {
       // Vérifiez si le produit a un prix défini
@@ -257,7 +194,7 @@ addToCart(productId: any) {
         console.error("Le prix du produit n'est pas défini :", product);
         return;
       }
-  
+
       // Calculer la réduction pour ce produit
       const discountedPrice = this.calculateDiscount(product.price);
       console.log("Réduction pour le produit", product.name, ":", discountedPrice);
@@ -265,25 +202,85 @@ addToCart(productId: any) {
       // product.discountedPrice = discountedPrice;
     });
   }
-  
+
   calculateDiscount(originalPrice: number): number {
     // Supposons que chaque point donne une réduction de 0.1 dt
     const discountPerPoint = 0.05;
-  
+
     // Calculer la réduction totale en fonction du nombre de points obtenus
     const totalDiscount = this.totalCarpoolings * discountPerPoint;
-  
+
     // Assurer que la réduction totale ne dépasse pas le prix original
     const discountedPrice = originalPrice - totalDiscount;
       console.log("points   ",this.totalCarpoolings);
-      
-      
+
+
     // Assurer que le prix après réduction est positif
     return Math.max(discountedPrice, 0);
   }
+
+  handler:any = null;
+  payEnabled: boolean = false;
+
+  pay(amount: any): Promise<void> {
+    return new Promise<void>((resolve, reject) => {
+      // Vérifier si le script Stripe est chargé
+      if (this.handler === null) {
+        // Si Stripe n'est pas encore chargé, charger Stripe d'abord
+        this.loadStripe().then(() => {
+          // Stripe est chargé, on peut maintenant effectuer le paiement
+          this.startPayment(amount, resolve, reject);
+        }).catch(error => {
+          console.error('Erreur lors du chargement de Stripe:', error);
+          reject(error);
+        });
+      } else {
+        // Si Stripe est déjà chargé, on démarre directement le paiement
+        this.startPayment(amount, resolve, reject);
+      }
+    });
   }
 
+  // Méthode pour démarrer le paiement
+  startPayment(amount: any, resolve: Function, reject: Function) {
+    const handler = (<any>window).StripeCheckout.configure({
+      key: 'pk_test_51HxRkiCumzEESdU2Z1FzfCVAJyiVHyHifo0GeCMAyzHPFme6v6ahYeYbQPpD9BvXbAacO2yFQ8ETlKjo4pkHSHSh00qKzqUVK9',
+      locale: 'auto',
+      token: (token: any) => {
+        console.log(token);
+        alert('Payment Success!!');
+        this.payEnabled = true;
+        resolve();
+      }
+    });
 
-  
+    handler.open({
+      name: 'Velo',
+      description: 'Your order description',
+      amount: amount * 100 // Stripe prend le montant en centimes
+    });
+  }
+
+  loadStripe(): Promise<void> {
+    return new Promise<void>((resolve, reject) => {
+      if (!window.document.getElementById('stripe-script')) {
+        const s = window.document.createElement("script");
+        s.id = "stripe-script";
+        s.type = "text/javascript";
+        s.src = "https://checkout.stripe.com/checkout.js";
+        s.onload = () => {
+          this.handler = (<any>window).StripeCheckout;
+          resolve(); // Stripe chargé avec succès
+        };
+        s.onerror = (error) => {
+          reject(error); // Erreur lors du chargement de Stripe
+        };
+        window.document.body.appendChild(s);
+      } else {
+        resolve(); // Si le script est déjà chargé, on peut directement continuer
+      }
+    });
+  }
+}
 
 

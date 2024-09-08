@@ -7,18 +7,17 @@ import { AuthService } from './auth.service';
 })
 export class AuthGuardService implements CanActivate {
     constructor(private authService: AuthService, private router: Router) {}
-  
+
     canActivate(): boolean {
       if (this.authService.isUserLoggedIn()) {
-        
+
         return true;
-        
+
       } else {
 
         this.router.navigate(['/login']);
-         // Assurez-vous que la route de redirection est correcte        
         return false;
-      
+
       }
     }
 }

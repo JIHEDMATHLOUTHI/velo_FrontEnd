@@ -32,12 +32,10 @@ export class AuthService {
         if (response && response.accessToken) {
           localStorage.setItem('accessToken', response.accessToken);
           console.log('Token retrieved and stored successfully:', response.accessToken);
-          console.log(this.getUserIdFromToken());
-          console.log(this.getToken());
-          
-          
+
+
         } else {
-        
+
           console.log('No token found in the response:', response);
         }
         return response;
@@ -48,7 +46,7 @@ export class AuthService {
       })
     );
   }
-  
+
   logout() {
     console.log("Début de la déconnexion");
     if (localStorage.getItem('accessToken')) {
@@ -62,15 +60,17 @@ export class AuthService {
   isAuthenticated(): boolean {
     const token = localStorage.getItem('accessToken');
     console.log("isAuthenticated suceess");
-    
     return !!token && !this.jwtHelper.isTokenExpired(token);
   }
 
+
+
   isUserLoggedIn(): boolean {
-    console.log("boo true");
-    
     return this.isAuthenticated();
   }
+
+
+
   getUserIdFromToken(): string | null {
     const token = localStorage.getItem('accessToken');
     if (token) {
@@ -108,15 +108,7 @@ export class AuthService {
       return null;
     }
   }
- /* private isAuthenticatedValue: boolean = false;
 
-  isAuthenticated(): boolean {
-    return this.isAuthenticatedValue; // Accès direct à la propriété, pas de parenthèses
-  }
-
-  setAuthenticated(isAuthenticated: boolean): void {
-    this.isAuthenticatedValue = isAuthenticated;
-  }*/
 
 }
 

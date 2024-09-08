@@ -5,7 +5,6 @@ import { Observable, of } from 'rxjs';
 import { ProductService } from '../Service/product.service';
 import { ImageProcessingService } from './image-processing.service';
 import { catchError, map } from 'rxjs/operators';
-import { Category } from '../model/enumerations/Category';
 
 @Injectable({
   providedIn: 'root'
@@ -42,7 +41,6 @@ export class ProductResolveBackService implements Resolve<Product>{
       adresse:"",
       numero:0,
       imageModels: [],
-      category: Category.ELECTRONICS,
       deliveryDays:0
     };
   }
